@@ -46,6 +46,25 @@ app.get('/tasks', (req, res) => {
             }
         })
     })
+//new route to add a task to db
+app.post('/tasks', (req, res) => {
+
+    const params = [req.body['title'], req.body['description'], req.body ['is_completed']];
+    const query = "INSERT INTO tasks (title, description, is_completed) VALUES (?, ?, ?);"
+
+        db.query(query, params, (err, results) => {
+    // handle the query. passing in the parameters from the body
+        if (err) {
+            console.log(`blah! could not get tasks, error message is '${err}'`); 
+            res. status(500).json({ error: 'Error adding taks to database...........'})
+        }
+            else {
+                // console.log(results[0]);
+                res.status(200).json(results);
+            }
+        })
+
+})
 
 app.listen(port, () => {
     console.log("Express server running on port 3000");
